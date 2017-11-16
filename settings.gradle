@@ -1,1 +1,1 @@
-include ':vectaury'
+include ':vectaury', ':vectaury-kotlin'

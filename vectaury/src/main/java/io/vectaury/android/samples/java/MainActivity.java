@@ -1,4 +1,4 @@
-package io.vectaury.vectaury_defaultintegration;
+package io.vectaury.android.samples.java;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

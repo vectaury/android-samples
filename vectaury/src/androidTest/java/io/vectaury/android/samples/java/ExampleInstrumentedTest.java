@@ -1,4 +1,4 @@
-package io.vectaury.vectaury_defaultintegration;
+package io.vectaury.android.samples.java;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("io.vectaury.vectaury_defaultintegration", appContext.getPackageName());
+        assertEquals("io.vectaury.android.samples.java", appContext.getPackageName());
     }
 }

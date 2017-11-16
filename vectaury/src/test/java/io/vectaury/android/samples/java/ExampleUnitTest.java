@@ -1,4 +1,4 @@
-package io.vectaury.vectaury_defaultintegration;
+package io.vectaury.android.samples.java;
 
 import org.junit.Test;
 
