@@ -1,0 +1,29 @@
+before_script:
+  - export ANDROID_HOME=~
+  - chmod +x ./gradlew
+
+stages:
+  - clean
+  - build
+
+cleanAll:
+  stage: clean
+  script:
+    - ./gradlew clean
+
+buildVec:
+  stage: build
+  script: 
+    - ./gradlew :vectaury:assembleDebug
+  artifacts:
+    paths:
+      - vectaury/build/outputs/
+
+buildVecKot:
+  stage: build
+  script: 
+    - ./gradlew :vectaury-kotlin:assembleDebug
+  artifacts:
+    paths:
+      - vectaury-kotlin/build/outputs/
+
