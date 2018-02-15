@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.widget.CompoundButton
 import android.widget.Toast
+import android.widget.ToggleButton
+import io.vectaury.android.sdk.Vectaury
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +21,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        askLocationPermission()
+        if (CustomApplication.USE_VECTAURY_SDK_PERMISSIONS_FLOW) {
+            Vectaury.get().startLocationPermissionWorkflow(this)
+        } else {
+            askLocationPermission()
+        }
+
+        val optinStatusToggle: ToggleButton = findViewById(R.id.optinToggle)
+        optinStatusToggle.isChecked = Vectaury.get().isOptin
+        optinStatusToggle.setOnCheckedChangeListener({
+            _, checked -> Vectaury.get().isOptin = checked
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        Vectaury.get().displayOptinDialog(this)
     }
 
     private fun askLocationPermission() {

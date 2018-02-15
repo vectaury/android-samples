@@ -7,7 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+
+import io.vectaury.android.sdk.Vectaury;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +22,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        askLocationPermission();
+        if (CustomApplication.USE_VECTAURY_SDK_PERMISSIONS_FLOW) {
+            Vectaury.get().startLocationPermissionWorkflow(this);
+        } else {
+            askLocationPermission();
+        }
+
+        ToggleButton optinStatusToggle = findViewById(R.id.optinToggle);
+        optinStatusToggle.setChecked(Vectaury.get().isOptin());
+        optinStatusToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                Vectaury.get().setOptin(checked);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Vectaury.get().displayOptinDialog(this);
     }
 
     private void askLocationPermission() {
