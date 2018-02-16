@@ -8,6 +8,11 @@
 
 # Vectaury Sample Apps
 
+Repository with examples of the Vectaury SDK implementation. This repository contains two applications:
+
+* vectaury app : An Android Java application with a default implementation of the Vectaury SDK
+* vectaury_kotlin app : An Android Kotlin application with a default implementation of the Vectaury SDK
+
 ## Requirements
 
 * Android SDK API 27
@@ -30,3 +35,4 @@ adb shell setprop log.tag.Vectaury VERBOSE
 ## Resources
 
 * [Vectaury Documentation](https://cdn.vectaury.io/sdk/doc/android/integration/)
+* [vectaury.io](https://www.vectaury.io)
