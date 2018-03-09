@@ -11,7 +11,7 @@ buildscript {
 }
 
 ext {
-    vectauryVersion = '1.1.1'
+    vectauryVersion = '1.1.2'
 }
 
 allprojects {
