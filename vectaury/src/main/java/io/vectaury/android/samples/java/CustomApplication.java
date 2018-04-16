@@ -22,10 +22,13 @@ import io.vectaury.android.sdk.Vectaury;
 public class CustomApplication extends Application {
 
     public static final boolean USE_VECTAURY_SDK_PERMISSIONS_FLOW = false;
+    public static final boolean USE_VECTAURY_DEBUG = false;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Vectaury.setDebugMode(USE_VECTAURY_DEBUG);
 
         Vectaury.start(this, "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
     }

@@ -22,10 +22,13 @@ class CustomApplication : Application() {
 
     companion object {
         const val USE_VECTAURY_SDK_PERMISSIONS_FLOW = false
+        const val USE_VECTAURY_DEBUG = false
     }
 
     override fun onCreate() {
         super.onCreate()
+
+        Vectaury.setDebugMode(USE_VECTAURY_DEBUG)
 
         Vectaury.start(this, "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")
     }
