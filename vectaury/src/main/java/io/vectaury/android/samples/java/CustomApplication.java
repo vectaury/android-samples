@@ -30,6 +30,8 @@ public class CustomApplication extends Application {
 
         Vectaury.setDebugMode(USE_VECTAURY_DEBUG);
 
-        Vectaury.start(this, "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx");
+        String apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+        boolean defaultOptin = false;
+        Vectaury.start(this, apiKey, defaultOptin);
     }
 }

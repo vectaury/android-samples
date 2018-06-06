@@ -18,13 +18,14 @@ package io.vectaury.android.samples.java;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import io.vectaury.android.sdk.Vectaury;
 
@@ -32,10 +33,24 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_LOCATION = 1;
 
+    private SimpleCmp cmp;
+
+    private Switch internalOptinSwitch;
+
+    private Switch vectauryOptinSwitch;
+    private Switch purpose1OptinSwitch;
+    private Switch purpose2OptinSwitch;
+    private Switch purpose3OptinSwitch;
+    private Switch purpose4OptinSwitch;
+    private Switch purpose5OptinSwitch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        cmp = new SimpleCmp(this);
+        cmp.enableCmp();
 
         if (CustomApplication.USE_VECTAURY_SDK_PERMISSIONS_FLOW) {
             Vectaury.get().startLocationPermissionWorkflow(this);
@@ -43,21 +58,81 @@ public class MainActivity extends AppCompatActivity {
             askLocationPermission();
         }
 
-        ToggleButton optinStatusToggle = findViewById(R.id.optinToggle);
-        optinStatusToggle.setChecked(Vectaury.get().isOptin());
-        optinStatusToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        internalOptinSwitch = findViewById(R.id.optinToggle);
+        vectauryOptinSwitch = findViewById(R.id.sw_consent);
+        purpose1OptinSwitch = findViewById(R.id.sw_purpose1);
+        purpose2OptinSwitch = findViewById(R.id.sw_purpose2);
+        purpose3OptinSwitch = findViewById(R.id.sw_purpose3);
+        purpose4OptinSwitch = findViewById(R.id.sw_purpose4);
+        purpose5OptinSwitch = findViewById(R.id.sw_purpose5);
+
+        vectauryOptinSwitch.setChecked(cmp.isVendorConsented(Vectaury.IAB_VENDOR_ID));
+        vectauryOptinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                Vectaury.get().setOptin(checked);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cmp.setVendorConsent(Vectaury.IAB_VENDOR_ID, isChecked);
+                updateInternalOptin();
             }
         });
+
+        purpose1OptinSwitch.setChecked(cmp.isPurposeConsented(1));
+        purpose1OptinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cmp.setPurposeConsent(1, isChecked);
+                updateInternalOptin();
+            }
+        });
+        purpose2OptinSwitch.setChecked(cmp.isPurposeConsented(2));
+        purpose2OptinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cmp.setPurposeConsent(2, isChecked);
+                updateInternalOptin();
+            }
+        });
+        purpose3OptinSwitch.setChecked(cmp.isPurposeConsented(3));
+        purpose3OptinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cmp.setPurposeConsent(3, isChecked);
+                updateInternalOptin();
+            }
+        });
+        purpose4OptinSwitch.setChecked(cmp.isPurposeConsented(4));
+        purpose4OptinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cmp.setPurposeConsent(4, isChecked);
+                updateInternalOptin();
+            }
+        });
+        purpose5OptinSwitch.setChecked(cmp.isPurposeConsented(5));
+        purpose5OptinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cmp.setPurposeConsent(5, isChecked);
+                updateInternalOptin();
+            }
+        });
+
+        updateInternalOptin();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Vectaury.get().displayOptinDialog(this);
+    private void updateInternalOptin() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                internalOptinSwitch.setOnCheckedChangeListener(null);
+                internalOptinSwitch.setChecked(Vectaury.get().isOptin());
+                internalOptinSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                        Vectaury.get().setOptin(checked);
+                    }
+                });
+            }
+        }, 500);
     }
 
     private void askLocationPermission() {

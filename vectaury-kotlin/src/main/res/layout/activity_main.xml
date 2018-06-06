@@ -7,6 +7,75 @@
     tools:context="io.vectaury.android.samples.kotlin.MainActivity">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/sw_consent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vectaury consent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="6dp"
+                android:background="#cecece" />
+
+            <Switch
+                android:id="@+id/sw_purpose1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Information storage and access" />
+
+            <Switch
+                android:id="@+id/sw_purpose2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Personalisation" />
+
+            <Switch
+                android:id="@+id/sw_purpose3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ad selection, delivery, reporting" />
+
+            <Switch
+                android:id="@+id/sw_purpose4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Content selection, delivery, reporting" />
+
+            <Switch
+                android:id="@+id/sw_purpose5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Measurement" />
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
@@ -17,7 +86,7 @@
         app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -38,7 +107,7 @@
                     android:layout_weight="1"
                     android:text="Opt-in status" />
 
-                <ToggleButton
+                <Switch
                     android:id="@+id/optinToggle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

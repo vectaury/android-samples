@@ -30,7 +30,9 @@ class CustomApplication : Application() {
 
         Vectaury.setDebugMode(USE_VECTAURY_DEBUG)
 
-        Vectaury.start(this, "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx")
+        val apiKey = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        val defaultOptin = false
+        Vectaury.start(this, apiKey, defaultOptin)
     }
 
 }
