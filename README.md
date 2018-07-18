@@ -8,10 +8,12 @@
 
 # Vectaury Sample Apps
 
-Repository with examples of the Vectaury SDK implementation. This repository contains two applications:
+Repository with examples of the Vectaury Location SDK implementation and Vectaury CMP implementation. This repository contains four applications:
 
-* vectaury app : An Android Java application with a default implementation of the Vectaury SDK
-* vectaury_kotlin app : An Android Kotlin application with a default implementation of the Vectaury SDK
+* vectaury app : An Android Java application with a default implementation of the Vectaury Location SDK
+* vectaury_kotlin app : An Android Kotlin application with a default implementation of the Vectaury Location SDK
+* cmp app : An Android Java application with a default implementation of the Vectaury CMP
+* cmp_kotlin app : An Android Kotlin application with a default implementation of the Vectaury CMP
 
 ## Requirements
 
@@ -26,10 +28,18 @@ Repository with examples of the Vectaury SDK implementation. This repository con
 
 ## Enable logs
 
-Logs are enabled automatically when application is build in debug. You can enable them in release with the following command line:
+Logs are enabled automatically when application is build in debug. You can enable them in release.
+
+For the Vectaury Location SDK:
 
 ```terminal
 adb shell setprop log.tag.Vectaury VERBOSE
+```
+
+For the Vectaury CMP:
+
+```terminal
+adb shell setprop log.tag.VectauryCmp VERBOSE
 ```
 
 ## Resources

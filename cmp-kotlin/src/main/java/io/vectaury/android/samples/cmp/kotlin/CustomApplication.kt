@@ -13,26 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vectaury.android.samples.kotlin
+package io.vectaury.android.samples.cmp.kotlin
 
 import android.app.Application
-import io.vectaury.android.sdk.Vectaury
+import io.vectaury.cmp.VectauryConsent
+import io.vectaury.cmp.VectauryConsentConfig
 
 class CustomApplication : Application() {
 
     companion object {
-        const val USE_VECTAURY_SDK_PERMISSIONS_FLOW = false
-        const val USE_VECTAURY_DEBUG = false
+        const val VECTAURY_VENDOR_ID = 368
     }
 
     override fun onCreate() {
         super.onCreate()
 
-        Vectaury.setDebugMode(USE_VECTAURY_DEBUG)
+        val configuration = VectauryConsentConfig.Builder(this, BuildConfig.VECTAURY_API_KEY)
+                .setLogo(R.drawable.logo_vectaury)
+                .addVendor(VECTAURY_VENDOR_ID)
+                .build()
 
-        val apiKey = BuildConfig.VECTAURY_API_KEY
-        val defaultOptin = false
-        Vectaury.start(this, apiKey, defaultOptin)
+        VectauryConsent.init(this, configuration)
     }
 
 }
