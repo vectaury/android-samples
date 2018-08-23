@@ -11,7 +11,7 @@ buildscript {
 }
 
 ext {
-    vectauryVersion = '1.3.2'
+    vectauryVersion = '1.3.3'
     vectauryCmpVersion = '1.1.0'
 
     vectauryApiKey = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
