@@ -16,11 +16,14 @@
 package io.vectaury.android.samples.cmp.kotlin
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import io.vectaury.cmp.VectauryConsent
+import io.vectaury.cmp.consentstring.IABConstants
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,8 +37,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (VectauryConsent.isFromConsent(requestCode, resultCode, data)) {
-            Toast.makeText(this, "CMP closed", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "CMP closed (canIDoWhatIWant: ${canIDoWhatIWant()})", Toast.LENGTH_SHORT).show()
+            Log.i("VectauryConsent", "Consent String: " + PreferenceManager.getDefaultSharedPreferences(this).getString(IABConstants.IAB_CONSENT_STRING, null)!!)
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun canIDoWhatIWant(): Boolean {
+        val consentString = VectauryConsent.getVectauryConsentString(this)
+
+        val iabPublisherPurposeAllowed = consentString.isPublisherPurposeAllowed(CustomApplication.IAB_PURPOSE_ACESS_AND_STORAGE_ID)
+        val customPublisherPurposeAllowed = consentString.isPublisherCustomPurposeAllowed(CustomApplication.CUSTOM_PURPOSE_1_ID)
+        val aCustomVendor = consentString.isCustomVendorAllowed(CustomApplication.CUSTOM_VENDOR_ID)
+
+        return iabPublisherPurposeAllowed && customPublisherPurposeAllowed && aCustomVendor
     }
 }

@@ -17,12 +17,21 @@ package io.vectaury.android.samples.cmp.java;
 
 import android.app.Application;
 
+import java.util.Arrays;
+
 import io.vectaury.cmp.VectauryConsent;
 import io.vectaury.cmp.VectauryConsentConfig;
+import io.vectaury.cmp.purpose.CustomPublisherPurpose;
+import io.vectaury.cmp.purpose.IABPublisherPurpose;
+import io.vectaury.cmp.purpose.LocationPublisherPurpose;
+import io.vectaury.cmp.vendor.CustomVendor;
 
 public class CustomApplication extends Application {
 
     private static final int VECTAURY_VENDOR_ID = 368;
+    public static final int CUSTOM_VENDOR_ID = 1;
+    public static final int IAB_PURPOSE_ACESS_AND_STORAGE_ID = 1;
+    public static final int CUSTOM_PURPOSE_1_ID = 1;
 
     @Override
     public void onCreate() {
@@ -31,6 +40,10 @@ public class CustomApplication extends Application {
         VectauryConsentConfig configuration = new VectauryConsentConfig.Builder(this, BuildConfig.VECTAURY_API_KEY)
                 .setLogo(R.drawable.logo_vectaury)
                 .addVendor(VECTAURY_VENDOR_ID)
+                .addCustomVendor(new CustomVendor(CUSTOM_VENDOR_ID, "My own vendor", "https://my.own.vendor.policy", Arrays.asList(1, 2, 5), Arrays.asList(1, 2)))
+                .addPublisherPurpose(new IABPublisherPurpose(this, IAB_PURPOSE_ACESS_AND_STORAGE_ID))
+                .addPublisherPurpose(new CustomPublisherPurpose(this, CUSTOM_PURPOSE_1_ID, getString(R.string.custom_purpose_title), getString(R.string.custom_purpose_description), -1))
+                .addPublisherPurpose(new LocationPublisherPurpose(this))
                 .build();
 
         VectauryConsent.init(this, configuration);

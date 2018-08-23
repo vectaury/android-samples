@@ -16,12 +16,16 @@
 package io.vectaury.android.samples.cmp.java;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import io.vectaury.cmp.VectauryConsent;
+import io.vectaury.cmp.consentstring.IABConstants;
+import io.vectaury.cmp.consentstring.VectauryConsentString;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,8 +46,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (VectauryConsent.isFromConsent(requestCode, resultCode, data)) {
-            Toast.makeText(this, "CMP closed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "CMP closed (canIDoWhatIWant: " + canIDoWhatIWant() + ")", Toast.LENGTH_SHORT).show();
+            Log.i("VectauryConsent", "Consent String: " + PreferenceManager.getDefaultSharedPreferences(this).getString(IABConstants.IAB_CONSENT_STRING, null));
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private boolean canIDoWhatIWant() {
+        VectauryConsentString consentString = VectauryConsent.getVectauryConsentString(this);
+
+        boolean iabPublisherPurposeAllowed = consentString.isPublisherPurposeAllowed(CustomApplication.IAB_PURPOSE_ACESS_AND_STORAGE_ID);
+        boolean customPublisherPurposeAllowed = consentString.isPublisherCustomPurposeAllowed(CustomApplication.CUSTOM_PURPOSE_1_ID);
+        boolean aCustomVendor = consentString.isCustomVendorAllowed(CustomApplication.CUSTOM_VENDOR_ID);
+
+        return iabPublisherPurposeAllowed && customPublisherPurposeAllowed && aCustomVendor;
     }
 }
