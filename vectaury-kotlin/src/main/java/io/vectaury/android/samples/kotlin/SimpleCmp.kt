@@ -19,10 +19,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import io.vectaury.android.sdk.iab.IABConstants
-import io.vectaury.cmp.consentstring.vendor.VendorConsentString
-import io.vectaury.cmp.consentstring.vendor.VendorConsentStringParser
-import java.util.*
+import io.vectaury.cmp.consentstring.IABConstants
+import io.vectaury.cmp.consentstring.VectauryConsentString
 
 /**
  * Basic implementation of the IAB CMP
@@ -30,36 +28,14 @@ import java.util.*
 class SimpleCmp(context: Context) {
 
     private val defaultSharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private val vendorConsentString: VendorConsentString
-
-    private val defaultConsentString: VendorConsentString
-        get() {
-            val consent = VendorConsentString()
-            consent.version = 1
-            consent.created = Date()
-            consent.lastUpdated = Date()
-            consent.cmpId = 1
-            consent.cmpVersion = 1
-            consent.cmpConsentScreen = 1
-            consent.cmpConsentLanguage = "fr"
-            consent.vendorListVersion = 1
-            return consent
-        }
+    private val consentString: VectauryConsentString
 
     init {
-        vendorConsentString = getVendorConsentString()
+        consentString = getVendorConsentString()
     }
 
-    private fun getVendorConsentString(): VendorConsentString {
-        val consentString = defaultSharedPreferences.getString(IABConstants.IAB_CONSENT_STRING, null)
-        if (consentString != null) {
-            try {
-                return VendorConsentStringParser.decode(consentString)
-            } catch (e: Exception) {
-                // ignored
-            }
-        }
-        return defaultConsentString
+    private fun getVendorConsentString(): VectauryConsentString {
+        return VectauryConsentString.load(defaultSharedPreferences)
     }
 
     @SuppressLint("ApplySharedPref")
@@ -72,7 +48,7 @@ class SimpleCmp(context: Context) {
     }
 
     fun setVendorConsent(vendorId: Int, consent: Boolean) {
-        val vendorsAllowed = vendorConsentString.vendorsAllowed
+        val vendorsAllowed = consentString.vendorsAllowed
         if (consent) {
             vendorsAllowed.add(vendorId)
         } else {
@@ -82,11 +58,11 @@ class SimpleCmp(context: Context) {
     }
 
     fun isVendorConsented(vendorId: Int): Boolean {
-        return vendorConsentString.isVendorAllowed(vendorId)
+        return consentString.isVendorAllowed(vendorId)
     }
 
     fun setPurposeConsent(purposeId: Int, consent: Boolean) {
-        val purposesAllowed = vendorConsentString.purposesAllowed
+        val purposesAllowed = consentString.vendorPurposesAllowed
         if (consent) {
             purposesAllowed.add(purposeId)
         } else {
@@ -96,12 +72,12 @@ class SimpleCmp(context: Context) {
     }
 
     fun isPurposeConsented(purposeId: Int): Boolean {
-        return vendorConsentString.isPurposeAllowed(purposeId)
+        return consentString.isVendorPurposeAllowed(purposeId)
     }
 
     @SuppressLint("ApplySharedPref")
     private fun saveConsentString() {
-        defaultSharedPreferences.edit().putString(IABConstants.IAB_CONSENT_STRING, VendorConsentStringParser.encode(vendorConsentString)).commit()
+        consentString.save(defaultSharedPreferences)
     }
 
 }

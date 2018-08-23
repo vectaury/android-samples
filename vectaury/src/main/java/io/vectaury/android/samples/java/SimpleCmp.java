@@ -20,12 +20,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import java.util.Date;
 import java.util.List;
 
-import io.vectaury.android.sdk.iab.IABConstants;
-import io.vectaury.cmp.consentstring.vendor.VendorConsentString;
-import io.vectaury.cmp.consentstring.vendor.VendorConsentStringParser;
+import io.vectaury.cmp.consentstring.ConsentStringParsingException;
+import io.vectaury.cmp.consentstring.IABConstants;
+import io.vectaury.cmp.consentstring.VectauryConsentString;
 
 /**
  * Basic implementation of the IAB CMP
@@ -33,36 +32,15 @@ import io.vectaury.cmp.consentstring.vendor.VendorConsentStringParser;
 public class SimpleCmp {
 
     private final SharedPreferences defaultSharedPreferences;
-    private final VendorConsentString vendorConsentString;
+    private final VectauryConsentString consentString;
 
     public SimpleCmp(Context context) {
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        vendorConsentString = getVendorConsentString();
+        consentString = getConsentString();
     }
 
-    private VendorConsentString getVendorConsentString() {
-        String consentString = defaultSharedPreferences.getString(IABConstants.IAB_CONSENT_STRING, null);
-        if (consentString != null) {
-            try {
-                return VendorConsentStringParser.decode(consentString);
-            } catch (Exception e) {
-                // ignored
-            }
-        }
-        return getDefaultConsentString();
-    }
-
-    private VendorConsentString getDefaultConsentString() {
-        VendorConsentString consent = new VendorConsentString();
-        consent.setVersion(1);
-        consent.setCreated(new Date());
-        consent.setLastUpdated(new Date());
-        consent.setCmpId(1);
-        consent.setCmpVersion(1);
-        consent.setCmpConsentScreen(1);
-        consent.setCmpConsentLanguage("fr");
-        consent.setVendorListVersion(1);
-        return consent;
+    private VectauryConsentString getConsentString() {
+        return VectauryConsentString.load(defaultSharedPreferences);
     }
 
     @SuppressLint("ApplySharedPref")
@@ -75,7 +53,7 @@ public class SimpleCmp {
     }
 
     public void setVendorConsent(int vendorId, boolean consent) {
-        List<Integer> vendorsAllowed = vendorConsentString.getVendorsAllowed();
+        List<Integer> vendorsAllowed = consentString.getVendorsAllowed();
         if (consent) {
             vendorsAllowed.add(vendorId);
         } else {
@@ -85,11 +63,11 @@ public class SimpleCmp {
     }
 
     public boolean isVendorConsented(int vendorId) {
-        return vendorConsentString.isVendorAllowed(vendorId);
+        return consentString.isVendorAllowed(vendorId);
     }
 
     public void setPurposeConsent(int purposeId, boolean consent) {
-        List<Integer> purposesAllowed = vendorConsentString.getPurposesAllowed();
+        List<Integer> purposesAllowed = consentString.getVendorPurposesAllowed();
         if (consent) {
             purposesAllowed.add(purposeId);
         } else {
@@ -99,12 +77,15 @@ public class SimpleCmp {
     }
 
     public boolean isPurposeConsented(int purposeId) {
-        return vendorConsentString.isPurposeAllowed(purposeId);
+        return consentString.isVendorPurposeAllowed(purposeId);
     }
 
     @SuppressLint("ApplySharedPref")
     private void saveConsentString() {
-        defaultSharedPreferences.edit().putString(IABConstants.IAB_CONSENT_STRING, VendorConsentStringParser.encode(vendorConsentString)).commit();
+        try {
+            consentString.save(defaultSharedPreferences);
+        } catch (ConsentStringParsingException ignored) {
+        }
     }
 
 }
