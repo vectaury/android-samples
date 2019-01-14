@@ -18,12 +18,3 @@ buildVec:
   artifacts:
     paths:
       - vectaury/build/outputs/
-
-buildVecKot:
-  stage: build
-  script: 
-    - ./gradlew :vectaury-kotlin:assembleDebug
-  artifacts:
-    paths:
-      - vectaury-kotlin/build/outputs/
-
