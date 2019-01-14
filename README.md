@@ -8,16 +8,13 @@
 
 # Vectaury Sample Apps
 
-Repository with examples of the Vectaury Location SDK implementation and Vectaury CMP implementation. This repository contains four applications:
+Repository with examples of the Vectaury Location SDK implementation and Vectaury CMP implementation. This repository contains one application for now:
 
-* vectaury app : An Android Java application with a default implementation of the Vectaury Location SDK
-* vectaury_kotlin app : An Android Kotlin application with a default implementation of the Vectaury Location SDK
-* cmp app : An Android Java application with a default implementation of the Vectaury CMP
-* cmp_kotlin app : An Android Kotlin application with a default implementation of the Vectaury CMP
+* vectaury app : An Android Kotlin application with a default implementation of the Vectaury Location SDK and the Vectaury CMP SDK
 
 ## Requirements
 
-* Android SDK API 27
+* Android SDK API 28
 * Android Studio 3
 
 ## Use
@@ -49,7 +46,7 @@ adb shell setprop log.tag.VectauryCmp VERBOSE
 
 ## License
 
-    Copyright 2018 Vectaury.
+    Copyright 2019 Vectaury.
     
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
